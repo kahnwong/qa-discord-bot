@@ -34,12 +34,15 @@ func main() {
 
 		// main
 		question := strings.Replace(m.Content, command, "", 1)
-		response := question
 
 		// send reply
-		_, err := s.ChannelMessageSend(m.ChannelID, response)
-		if err != nil {
-			log.Fatal().Err(err).Msg("Error sending message")
+		if question != "" {
+			response := question
+
+			_, err := s.ChannelMessageSend(m.ChannelID, response)
+			if err != nil {
+				log.Error().Err(err).Msg("Error sending message")
+			}
 		}
 	})
 
