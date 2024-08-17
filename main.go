@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"os/signal"
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
 	_ "github.com/joho/godotenv/autoload"
+	"github.com/rs/zerolog/log"
 )
 
 var (
@@ -21,8 +21,6 @@ func main() {
 
 	// main
 	session.AddHandler(func(s *discordgo.Session, m *discordgo.MessageCreate) {
-		fmt.Println(m.Content)
-
 		command := "!request"
 		args := strings.Split(m.Content, " ")
 		if args[0] != command {
@@ -38,19 +36,19 @@ func main() {
 
 		_, err := s.ChannelMessageSend(m.ChannelID, response)
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal().Err(err).Msg("Error sending message")
 		}
 	})
 
 	// bot init
 	session.AddHandler(func(s *discordgo.Session, r *discordgo.Ready) {
-		log.Printf("Logged in as %s", r.User.String())
+		log.Info().Msgf("Logged in as %s", r.User.String())
 	})
 
 	// start bot
 	err := session.Open()
 	if err != nil {
-		log.Fatalf("could not open session: %s", err)
+		log.Fatal().Err(err).Msg("Could not open session")
 	}
 
 	// keep the bot running
@@ -60,6 +58,6 @@ func main() {
 
 	err = session.Close()
 	if err != nil {
-		log.Printf("could not close session gracefully: %s", err)
+		log.Error().Err(err).Msg("Could not close session gracefully")
 	}
 }
