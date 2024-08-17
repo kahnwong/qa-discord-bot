@@ -22,8 +22,9 @@ func main() {
 	// main
 	session.AddHandler(func(s *discordgo.Session, m *discordgo.MessageCreate) {
 		command := "!request"
-		args := strings.Split(m.Content, " ")
-		if args[0] != command {
+
+		// check if command is triggered
+		if !strings.HasPrefix(m.Content, command) {
 			return
 		}
 
@@ -31,8 +32,9 @@ func main() {
 			return
 		}
 
-		input := m.Content[1:]
-		response := input
+		// main
+		question := strings.Replace(m.Content, command, "", 1)
+		response := question
 
 		_, err := s.ChannelMessageSend(m.ChannelID, response)
 		if err != nil {
