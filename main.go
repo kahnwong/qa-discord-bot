@@ -45,7 +45,14 @@ func handleRequest(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	// main
-	query := strings.Replace(m.Content, command, "", 1)
+	var query string
+	if m.Type == 19 { // is a reply
+		if m.Content == command {
+			query = m.Message.ReferencedMessage.Content
+		}
+	} else {
+		query = strings.Replace(m.Content, command, "", 1)
+	}
 
 	var response submitResponse
 	if query != "" {
