@@ -15,40 +15,43 @@ var (
 	discordAuthenticationToken = os.Getenv("DISCORD_AUTHENTICATION_TOKEN")
 )
 
+func handleRequest(s *discordgo.Session, m *discordgo.MessageCreate) {
+	command := "!request"
+
+	// check if command is triggered
+	if !strings.HasPrefix(m.Content, command) {
+		return
+	}
+
+	if m.Author.ID == s.State.User.ID {
+		return
+	}
+
+	// main
+	question := strings.Replace(m.Content, command, "", 1)
+
+	if question != "" {
+		log.Info().
+			Str("author", m.Author.Username).
+			Str("channel", m.Message.ChannelID).
+			Msg(question)
+
+		response := question
+
+		_, err := s.ChannelMessageSend(m.ChannelID, response)
+		if err != nil {
+			log.Error().Err(err).Msg("Error sending message")
+		}
+	}
+}
+
 func main() {
 	// init
 	session, _ := discordgo.New(fmt.Sprintf("Bot %s", discordAuthenticationToken))
 
 	// main
 	session.AddHandler(func(s *discordgo.Session, m *discordgo.MessageCreate) {
-		command := "!request"
-
-		// check if command is triggered
-		if !strings.HasPrefix(m.Content, command) {
-			return
-		}
-
-		if m.Author.ID == s.State.User.ID {
-			return
-		}
-
-		// main
-		question := strings.Replace(m.Content, command, "", 1)
-
-		// send reply
-		if question != "" {
-			log.Info().
-				Str("author", m.Author.Username).
-				Str("channel", m.Message.ChannelID).
-				Msg(question)
-
-			response := question
-
-			_, err := s.ChannelMessageSend(m.ChannelID, response)
-			if err != nil {
-				log.Error().Err(err).Msg("Error sending message")
-			}
-		}
+		handleRequest(s, m)
 	})
 
 	// bot init
