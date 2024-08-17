@@ -46,12 +46,15 @@ func handleRequest(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	// main
 	var query string
+	var user string
 	if m.Type == 19 { // is a reply
 		if m.Content == command {
 			query = m.Message.ReferencedMessage.Content
+			user = m.Message.ReferencedMessage.Author.ID
 		}
 	} else {
 		query = strings.Replace(m.Content, command, "", 1)
+		user = m.Author.ID
 	}
 
 	var response submitResponse
@@ -87,7 +90,8 @@ func handleRequest(s *discordgo.Session, m *discordgo.MessageCreate) {
 			Str("response", response.Response).
 			Msg(query)
 
-		_, err = s.ChannelMessageSend(m.ChannelID, response.Response)
+		message := fmt.Sprintf("Hi <@%s>,\n%s", user, response.Response)
+		_, err = s.ChannelMessageSend(m.ChannelID, message)
 		if err != nil {
 			log.Error().Err(err).Msg("Error sending message")
 		}
