@@ -37,6 +37,11 @@ func main() {
 
 		// send reply
 		if question != "" {
+			log.Info().
+				Str("author", m.Author.Username).
+				Str("channel", m.Message.ChannelID).
+				Msg(question)
+
 			response := question
 
 			_, err := s.ChannelMessageSend(m.ChannelID, response)
