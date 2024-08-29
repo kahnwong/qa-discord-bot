@@ -1,6 +1,6 @@
 module github.com/kahnwong/qa-discord-bot
 
-go 1.22.5
+go 1.23
 
 require (
 	github.com/bwmarrin/discordgo v0.28.1
