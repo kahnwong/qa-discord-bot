@@ -76,7 +76,8 @@ func handleRequest(s *discordgo.Session, m *discordgo.MessageCreate) {
 			Method(http.MethodPost).
 			Path("submit").
 			BodyJSON(body).
-			Cookie("access_token", qaApiKey).
+			Header("X-API-Key", qaApiKey).    // go implementation
+			Cookie("access_token", qaApiKey). // rust implementation
 			ToJSON(&response).
 			Fetch(context.Background())
 
