@@ -1,7 +1,6 @@
----
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v5.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -15,10 +14,17 @@ repos:
       - id: detect-private-key
       - id: fix-byte-order-marker
       - id: mixed-line-ending
-  # ----------------------- OPS -----------------------
-  - repo: https://github.com/AleksaC/hadolint-py
-    rev: v2.12.1b3
+  - repo: https://github.com/kahnwong/pre-commit
+    rev: "af3687a"
     hooks:
+      - id: go-build
+      - id: go-fmt
+      - id: go-imports
+      - id: go-mod-tidy
+      - id: go-unit-tests
+      - id: go-vet
+      - id: golangci-lint
+      - id: yamlfmt
       - id: hadolint
         args:
           - --ignore
@@ -27,13 +33,4 @@ repos:
           - DL3018
           - --ignore
           - DL3027
-  # ----------------------- GOLANG -----------------------
-  - repo: https://github.com/dnephin/pre-commit-golang
-    rev: v0.5.1
-    hooks:
-      - id: go-fmt
-      - id: go-vet
-      - id: go-imports
-      - id: golangci-lint
-      - id: go-build
-      - id: go-mod-tidy
+      - id: trufflehog
