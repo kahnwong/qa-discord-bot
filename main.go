@@ -82,7 +82,7 @@ func handleRequest(s *discordgo.Session, m *discordgo.MessageCreate) {
 			Fetch(context.Background())
 
 		if err != nil {
-			log.Fatal().Err(err).Msg("Failed to send request to qa-api")
+			log.Fatal().Msg("Failed to send request to qa-api")
 		}
 
 		log.Info().
@@ -94,7 +94,7 @@ func handleRequest(s *discordgo.Session, m *discordgo.MessageCreate) {
 		message := fmt.Sprintf("Hi <@%s>,\n%s", user, response.Response)
 		_, err = s.ChannelMessageSend(m.ChannelID, message)
 		if err != nil {
-			log.Error().Err(err).Msg("Error sending message")
+			log.Error().Msg("Error sending message")
 		}
 	}
 }
@@ -116,7 +116,7 @@ func main() {
 	// start bot
 	err := session.Open()
 	if err != nil {
-		log.Fatal().Err(err).Msg("Could not open session")
+		log.Fatal().Msg("Could not open session")
 	}
 
 	// keep the bot running
@@ -126,6 +126,6 @@ func main() {
 
 	err = session.Close()
 	if err != nil {
-		log.Error().Err(err).Msg("Could not close session gracefully")
+		log.Error().Msg("Could not close session gracefully")
 	}
 }
