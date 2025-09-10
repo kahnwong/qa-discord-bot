@@ -4,7 +4,7 @@ go 1.24
 
 require (
 	github.com/bwmarrin/discordgo v0.29.0
-	github.com/carlmjohnson/requests v0.24.3
+	github.com/carlmjohnson/requests v0.25.1
 	github.com/google/uuid v1.6.0
 	github.com/joho/godotenv v1.5.1
 	github.com/rs/zerolog v1.34.0
