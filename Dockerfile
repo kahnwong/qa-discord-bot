@@ -10,7 +10,7 @@ COPY *.go ./
 RUN CGO_ENABLED=0 go build -ldflags "-w -s" -o /qa-discord-bot
 
 # hadolint ignore=DL3007
-FROM gcr.io/distroless/static-debian11:latest AS deploy
+FROM gcr.io/distroless/static-debian13:latest AS deploy
 COPY --from=build /qa-discord-bot /
 
 CMD ["/qa-discord-bot"]
